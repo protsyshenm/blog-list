@@ -24,7 +24,7 @@ test('blog post should have id property', async () => {
   expect(post.id).toBeDefined()
 })
 
-test.only('valid blog post should be successfully added', async () => {
+test('valid blog post should be successfully added', async () => {
   const newBlog = {
     title: "Blog title",
     author: "Blog author",
@@ -51,4 +51,24 @@ test.only('valid blog post should be successfully added', async () => {
 
   expect(response.body).toHaveLength(testHelper.blogs.length + 1)
   expect(blogs).toContainEqual(newBlog)
+})
+
+test.only('if the request body object is missing likes, likes will be set to zero', async () => {
+  const newBlog = {
+    title: "Blog title",
+    author: "Blog author",
+    url: "Blog url"
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const response = await api.get('/api/blogs')
+  
+  const recentBlog = response.body[response.body.length - 1]
+
+  expect(recentBlog.likes).toBe(0)
 })
