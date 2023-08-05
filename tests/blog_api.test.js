@@ -23,3 +23,32 @@ test('blog post should have id property', async () => {
   const post = response.body[0]
   expect(post.id).toBeDefined()
 })
+
+test.only('valid blog post should be successfully added', async () => {
+  const newBlog = {
+    title: "Blog title",
+    author: "Blog author",
+    url: "Blog url",
+    likes: 10
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const response = await api.get('/api/blogs')
+
+  const blogs = response.body.map(blog => {
+    return {
+      title: blog.title,
+      author: blog.author,
+      url: blog.url,
+      likes: blog.likes
+    }
+  })
+
+  expect(response.body).toHaveLength(testHelper.blogs.length + 1)
+  expect(blogs).toContainEqual(newBlog)
+})
