@@ -17,3 +17,9 @@ test('all blogs should be returned', async () => {
   const response = await api.get('/api/blogs')
   expect(response.body).toHaveLength(testHelper.blogs.length)
 })
+
+test('blog post should have id property', async () => {
+  const response = await api.get('/api/blogs')
+  const post = response.body[0]
+  expect(post.id).toBeDefined()
+})
