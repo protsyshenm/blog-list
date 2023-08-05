@@ -73,7 +73,7 @@ test('if the likes is absent, likes will be set to zero', async () => {
   expect(recentBlog.likes).toBe(0)
 })
 
-test('if the title is absent, 400 bad request is sent', async () => {
+test('if the title is absent, while creating new blog, 400 bad request is sent', async () => {
   const newBlog = {
     author: "Blog author",
     url: "Blog url",
@@ -88,7 +88,7 @@ test('if the title is absent, 400 bad request is sent', async () => {
 
 })
 
-test('if the url is absent, 400 bad request is sent', async () => {
+test('if the url is absent, while creating new blog, 400 bad request is sent', async () => {
   const newBlog = {
     title: "Blog title",
     author: "Blog author",
@@ -101,4 +101,17 @@ test('if the url is absent, 400 bad request is sent', async () => {
     .expect(400)
     .expect('Content-Type', /application\/json/)
 
+})
+
+test.only('blog post should be removed when correct id is passed', async () => {
+  const response = await api.get('/api/blogs')
+  const blogToRemove = response.body[0]
+  
+  await api
+    .delete(`/api/blogs/${blogToRemove.id}`)
+    .expect(204)
+
+  const blogsAtEnd = await api.get('/api/blogs')
+  expect(blogsAtEnd.body).toHaveLength(testHelper.blogs.length - 1)
+  expect(blogsAtEnd.body).not.toContainEqual(blogToRemove)
 })
