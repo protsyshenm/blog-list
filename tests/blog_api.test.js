@@ -53,7 +53,7 @@ test('valid blog post should be successfully added', async () => {
   expect(blogs).toContainEqual(newBlog)
 })
 
-test.only('if the request body object is missing likes, likes will be set to zero', async () => {
+test('if the likes is absent, likes will be set to zero', async () => {
   const newBlog = {
     title: "Blog title",
     author: "Blog author",
@@ -71,4 +71,34 @@ test.only('if the request body object is missing likes, likes will be set to zer
   const recentBlog = response.body[response.body.length - 1]
 
   expect(recentBlog.likes).toBe(0)
+})
+
+test('if the title is absent, 400 bad request is sent', async () => {
+  const newBlog = {
+    author: "Blog author",
+    url: "Blog url",
+    likes: 3
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
+
+})
+
+test('if the url is absent, 400 bad request is sent', async () => {
+  const newBlog = {
+    title: "Blog title",
+    author: "Blog author",
+    likes: 3
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
+
 })
