@@ -103,7 +103,7 @@ test('if the url is absent, while creating new blog, 400 bad request is sent', a
 
 })
 
-test.only('blog post should be removed when correct id is passed', async () => {
+test('blog post should be removed when correct id is passed', async () => {
   const response = await api.get('/api/blogs')
   const blogToRemove = response.body[0]
   
@@ -114,4 +114,26 @@ test.only('blog post should be removed when correct id is passed', async () => {
   const blogsAtEnd = await api.get('/api/blogs')
   expect(blogsAtEnd.body).toHaveLength(testHelper.blogs.length - 1)
   expect(blogsAtEnd.body).not.toContainEqual(blogToRemove)
+})
+
+test.only('blog post likes can be updated', async () => {
+  const response = await api.get('/api/blogs')
+  const randomIndex = Math.floor(Math.random() * response.body.length)
+  const blogToUpdate = response.body[randomIndex]
+  console.log(blogToUpdate);
+
+  const updatedBlog = {
+    title: blogToUpdate.title,
+    author: blogToUpdate.author,
+    url: blogToUpdate.url,
+    likes: blogToUpdate.likes * 2
+  }
+  
+  await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send(updatedBlog)
+    .expect(200)
+
+  const blogsAtEnd = await api.get('/api/blogs')
+  expect(blogsAtEnd.body[randomIndex].likes).toBe(blogToUpdate.likes * 2)
 })
