@@ -1,8 +1,8 @@
 const blog = [
   {
-    title: 'Go To Statement Considered Harmful',
-    author: 'Edsger W. Dijkstra',
-    url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+    title: "Go To Statement Considered Harmful",
+    author: "Edsger W. Dijkstra",
+    url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
     likes: 5,
   }
 ]
@@ -46,4 +46,22 @@ const blogs = [
   }  
 ]
 
-module.exports = { blog, blogs }
+const users = [
+  {
+    username: "Miwok4ok",
+    name: "Mykhailo Protsyshen",
+    password: "12345678"
+  },
+  {
+    username: "jdoe",
+    name: "John Doe",
+    password: "password"
+  },
+  {
+    username: "jack_bauer",
+    name: "Jack Bauer",
+    password: "QwErTy123"
+  }
+]
+
+module.exports = { blog, blogs, users }

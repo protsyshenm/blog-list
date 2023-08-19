@@ -120,7 +120,6 @@ test.only('blog post likes can be updated', async () => {
   const response = await api.get('/api/blogs')
   const randomIndex = Math.floor(Math.random() * response.body.length)
   const blogToUpdate = response.body[randomIndex]
-  console.log(blogToUpdate);
 
   const updatedBlog = {
     title: blogToUpdate.title,
